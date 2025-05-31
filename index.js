@@ -7,8 +7,9 @@ const cookieParser = require("cookie-parser");
 
 
 // Import Routes
-const authRoutes = require("./routes/auth");
-
+const authRoutes = require("./routes/auth.routes");
+const userProfile = require('./routes/userProfile.routes');
+const skillOfferRoutes = require('./routes/skillOffer.routes');
 
 // middleware
 app.use(express.json());
@@ -21,6 +22,8 @@ connectToDB();
 
 // Use Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/profile", userProfile);
+app.use('/api/skill-offers', skillOfferRoutes);
  
 app.listen(process.env.PORT , () => {
   console.log("server is running on 3000");

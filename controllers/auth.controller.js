@@ -1,19 +1,6 @@
-require("dotenv").config();
+const User = require('../models/User.model');
 
-const express = require("express");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const User = require("../models/user.model");
-const authMiddleware = require("../middleware/auth");
-
-const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET;
-
-router.get("/", (req, res) => {
-  res.send("all users");
-});
-
-router.post("/register", async (req, res) => {
+exports.register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
@@ -37,9 +24,9 @@ router.post("/register", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-});
+}
 
-router.post("/login", async (req, res) => {
+exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -64,20 +51,8 @@ router.post("/login", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-});
+}
 
-router.get("/logout", (req, res) => {
+exports.logout = (req, res) => {
   res.clearCookie("token").json({ msg: "Logged out successfully" });
-});
-
-// ✅ Protected route
-router.get("/me", authMiddleware, async (req, res) => {
-  try{ 
-    const user = await User.findById(req.user).select("-password");
-    res.json(user);
-  } catch(err){
-    res.json(err)
-  }
-});
-
-module.exports = router;
+}
