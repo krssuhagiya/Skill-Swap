@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const skillOfferController = require('../controllers/skillOffer.controller');
+const authMiddleware = require("../middleware/auth");
 
 // POST: Create a skill offer
-router.post('/', skillOfferController.createSkillOffer);
+router.post('/',authMiddleware, skillOfferController.createSkillOffer);
 
 // GET: All offers
 router.get('/', skillOfferController.getAllOffers);
@@ -13,5 +14,8 @@ router.get('/user/:userId', skillOfferController.getOffersByUser);
 
 // DELETE: Delete an offer by ID
 router.delete('/:id', skillOfferController.deleteOffer);
+
+// search skills 
+router.get("/search", skillOfferController.searchOffers);
 
 module.exports = router;

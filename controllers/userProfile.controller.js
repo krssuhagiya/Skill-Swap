@@ -41,6 +41,17 @@ exports.getProfile = async (req, res) => {
   }
 };
 
+// get all profiles
+exports.getAllProfiles = async (req, res) => {
+  try {
+    const profiles = await UserProfile.find().populate("userId", "username email");
+    res.status(200).json(profiles);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 // delete profile by userId
 exports.deleteProfile = async (req, res) => {
   try {
@@ -54,3 +65,4 @@ exports.deleteProfile = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
