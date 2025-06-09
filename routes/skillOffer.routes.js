@@ -13,7 +13,7 @@ router.get('/', skillOfferController.getAllOffers);
 router.get('/user/:userId', skillOfferController.getOffersByUser);
 
 // DELETE: Delete an offer by ID
-router.delete('/:id', skillOfferController.deleteOffer);
+router.delete('/:id',authMiddleware, skillOfferController.deleteOffer);
 
 // search skills 
 router.get("/search", skillOfferController.searchOffers);
