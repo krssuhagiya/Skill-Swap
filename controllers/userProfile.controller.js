@@ -3,8 +3,8 @@ const UserProfile = require("../models/UserProfile.model");
 // Create or update user profile
 exports.upsertProfile = async (req, res) => {
   try {
+    const userId = req.user.id; // ✅ NOT req.user.id
     const {
-      userId,
       bio,
       skillsOffered,
       skillsWanted,
@@ -25,13 +25,14 @@ exports.upsertProfile = async (req, res) => {
   }
 };
 
-// get profile by userId
+
+// get profile by userId  
 exports.getProfile = async (req, res) => {
   try {
     const { userId } = req.params;
     const profile = await UserProfile.findOne({ userId }).populate(
       "userId",
-      "name email"
+      "username email"
     );
 
     if (!profile) return res.status(404).json({ message: "Profile not found" });
@@ -65,4 +66,20 @@ exports.deleteProfile = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+exports.meProfile = async (req, res) => {
+  try {
+    const userId = req.user.id; // ✅ NOT req.user.id
+    const profile = await UserProfile.findOne({ userId });
+
+    if (!profile) return res.status(404).json({ message: "Profile not found" });
+ 
+    res.status(200).json(profile);
+  } catch (error) {
+    console.error("Error in meProfile:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 
